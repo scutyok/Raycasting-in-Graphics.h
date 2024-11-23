@@ -158,25 +158,55 @@ int main()
             int lineHeight = (int)(sH / perpWallDist);
 
             //cel mai inalt si cel mai scund pixel (e pentru fill)
-            int drawStart = -lineHeight / 2 + sH / 2;
+            int drawStart = -lineHeight / 2 + sH / 2; //incepe de sus
             if (drawStart < 0)
             {
                 drawStart = 0;
-            }
-            int drawEnd = lineHeight / 2 + sH / 2;
+            } 
+            int drawEnd = lineHeight / 2 + sH / 2; //incepe de jos
             if (drawEnd >= sH)
             {
                 drawEnd = sH - 1;
             }
             //bazat pe numarul din matrice, alegem culoarea
             int r=0,g=0,b=0;
+            int drawLum = drawEnd - drawStart;
             switch (map[mapX][mapY])
             {
-                case 1:  r = 255; g = 0; b = 0; break; //red
-                case 2:  r = 0; g = 255; b = 0; break; //green
-                case 3:  r = 0; g = 0; b = 255;  break; //blue
-				case 4:  r = 255; g = 255; b = 255; break;   //white
-				default: r = 255; g = 255; b = 0; break; //yellow
+                case 1:  
+                    r = 180; g = 0; b = 0; 
+                    if (drawLum > 100)
+                    {
+                        r = r + 75;
+                    }
+                    break; //red
+                case 2:  r = 0; g = 180; b = 0; 
+                    if (drawLum > 100)
+                    {
+                        g = g + 75;
+                    }
+                    break; //green
+                case 3:  r = 0; g = 0; b = 180;  
+                    if (drawLum > 100)
+                    {
+                        b = b + 75;
+                    }
+                    break; //blue
+				case 4:  r = 180; g = 180; b = 180; 
+                    if (drawLum > 100)
+                    {
+                        r = r + 75;
+                        g = g + 75;
+                        b = b + 75;
+                    }
+                    break;   //white
+				default: r = 180; g = 180; b = 0; 
+                    if (drawLum > 100)
+                    {
+                        r = r + 75;
+                        g = g + 75;
+                    }
+                    break; //yellow
             }
 			// luminozitatea peretelui
             if (side == 1) 
