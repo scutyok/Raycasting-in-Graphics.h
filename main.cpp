@@ -195,23 +195,25 @@ int main()
                 drawEnd = sH - 1;
             }
             //bazat pe numarul din matrice, alegem culoarea
-            int color;
+            int r=0,g=0,b=0;
             switch (map[mapX][mapY])
             {
-                case 1:  color = COLOR(255,0,0);  break; //red
-                case 2:  color = COLOR(0, 255, 0);  break; //green
-                case 3:  color = COLOR(0, 0, 255);  break; //blue
-				case 4:  color = COLOR(255, 255, 255); break;   //white
-				default: color = COLOR(255, 255, 0); break; //yellow
+                case 1:  r = 255; g = 0; b = 0; break; //red
+                case 2:  r = 0; g = 255; b = 0; break; //green
+                case 3:  r = 0; g = 0; b = 255;  break; //blue
+				case 4:  r = 255; g = 255; b = 255; break;   //white
+				default: r = 255; g = 255; b = 0; break; //yellow
             }
 			// luminozitatea peretelui
             if (side == 1) 
             { 
-                color = color/2; 
+                r = r / 2; 
+				g = g / 2;
+				b = b / 2;
             }
 
             //linia verticala
-			setcolor(color);
+			setcolor(COLOR(r, g, b));
             line(x, drawStart, x, drawEnd);
         }
 
