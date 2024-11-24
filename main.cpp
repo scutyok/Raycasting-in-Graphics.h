@@ -170,41 +170,58 @@ int main()
             }
             //bazat pe numarul din matrice, alegem culoarea
             int r=0,g=0,b=0;
-            int drawLum = drawEnd - drawStart;
+            float epsilon = sH / 255;
+            int drawLum = (drawEnd - drawStart)/epsilon;
             switch (map[mapX][mapY])
             {
                 case 1:  
-                    r = 180; g = 0; b = 0; 
-                    if (drawLum > 100)
+                    if (100 + drawLum < 255)
                     {
-                        r = r + 75;
+                        r = 100 + drawLum; g = 0; b = 0;
+                    }
+                    else
+                    {
+                        r = 255; g = 0; b = 0;
                     }
                     break; //red
-                case 2:  r = 0; g = 180; b = 0; 
-                    if (drawLum > 100)
+                case 2:  
+                    if (100 + drawLum < 255)
                     {
-                        g = g + 75;
+                        r = 0; g = 100 + drawLum; b = 0;
+                    }
+                    else
+                    {
+                        r = 0; g = 255; b = 0;
                     }
                     break; //green
-                case 3:  r = 0; g = 0; b = 180;  
-                    if (drawLum > 100)
+                case 3:  
+                    if (100 + drawLum < 255)
                     {
-                        b = b + 75;
+                        r = 0; g = 0; b = 100 + drawLum;
+                    }
+                    else
+                    {
+                        r = 0; g = 0; b = 255;
                     }
                     break; //blue
-				case 4:  r = 180; g = 180; b = 180; 
-                    if (drawLum > 100)
+				case 4:  
+                    if (100 + drawLum < 255)
                     {
-                        r = r + 75;
-                        g = g + 75;
-                        b = b + 75;
+                        r = 100 + drawLum; g = 100 + drawLum; b = 100 + drawLum;
+                    }
+                    else
+                    {
+                        r = 255; g = 255; b = 255;
                     }
                     break;   //white
-				default: r = 180; g = 180; b = 0; 
-                    if (drawLum > 100)
+				default: 
+                    if (100 + drawLum < 255)
                     {
-                        r = r + 75;
-                        g = g + 75;
+                        r = 100 + drawLum; g = 100 + drawLum; b = 0;
+                    }
+                    else
+                    {
+                        r = 255; g = 255; b = 0;
                     }
                     break; //yellow
             }
@@ -222,7 +239,6 @@ int main()
         }
 
 		swapbuffers();
-        
         oldTime = time;
         time++;
 
@@ -230,8 +246,6 @@ int main()
         
         double moveSpeed = frameTime * 100.0;
         double rotSpeed = frameTime * 30.0;
-
-        cout << posX << " " << posY << " " << dirX << " " << dirY << " " << planeX << " " << planeY << endl;
 
         ch = getch();
 
