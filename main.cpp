@@ -229,12 +229,13 @@ int main()
                 int r = 0, g = 0, b = 0;
                 float epsilon = sH / 255;
                 int drawLum = (drawEnd - drawStart) / epsilon;
+                int startLum = 50;
                 switch (map[mapX][mapY])
                 {
                 case 1:
-                    if (100 + drawLum < 255)
+                    if (startLum + drawLum < 255)
                     {
-                        r = 100 + drawLum; g = 0; b = 0;
+                        r = startLum + drawLum; g = 0; b = 0;
                     }
                     else
                     {
@@ -242,9 +243,9 @@ int main()
                     }
                     break; //red
                 case 2:
-                    if (100 + drawLum < 255)
+                    if (startLum + drawLum < 255)
                     {
-                        r = 0; g = 100 + drawLum; b = 0;
+                        r = 0; g = startLum + drawLum; b = 0;
                     }
                     else
                     {
@@ -252,9 +253,9 @@ int main()
                     }
                     break; //green
                 case 3:
-                    if (100 + drawLum < 255)
+                    if (startLum + drawLum < 255)
                     {
-                        r = 0; g = 0; b = 100 + drawLum;
+                        r = 0; g = 0; b = startLum + drawLum;
                     }
                     else
                     {
@@ -262,9 +263,9 @@ int main()
                     }
                     break; //blue
                 case 4:
-                    if (100 + drawLum < 255)
+                    if (startLum + drawLum < 255)
                     {
-                        r = 100 + drawLum; g = 100 + drawLum; b = 100 + drawLum;
+                        r = startLum + drawLum; g = startLum + drawLum; b = startLum + drawLum;
                     }
                     else
                     {
@@ -272,9 +273,9 @@ int main()
                     }
                     break;   //white
                 default:
-                    if (100 + drawLum < 255)
+                    if (startLum + drawLum < 255)
                     {
-                        r = 100 + drawLum; g = 100 + drawLum; b = 0;
+                        r = startLum + drawLum; g = startLum + drawLum; b = 0;
                     }
                     else
                     {
