@@ -18,15 +18,10 @@ int map[mW][mH];
 //pozitiile de start ale playerului
 double posX, posY;
 
-int mapData(int n)
+int mapData(char n[])
 {
-	char s[10] = {'m', 'a', 'p', (char)n, '.', 'i', 'n'};
+	char s[100] = {'m', 'a', 'p',n[0],n[1],n[2],n[3], '.', 'i', 'n'};
     ifstream fin(s);
-	if (!fin.is_open())
-	{
-		cout << "Error: Map not found";
-		exit(0);
-	}
     int i=1, j=1, jnk;
     char ch,oldch=1;
     fin >> posX >> posY;
@@ -49,7 +44,6 @@ int mapData(int n)
         }
         oldch = ch;
     }
-	cout << posX << " " << posY << endl;
     return 1;
 }
 
@@ -86,41 +80,66 @@ int main()
 
     initwindow(sW, sH, "Raycaster");
 
-    char ch=49,aux;
+    char aux, key, ch[10000], numb[10000];
 
     int ok = 0;
     while (ok == 0)
     {
-        char t[10] = { 'm', 'a', 'p', (char)ch };
-        if (ch >= 48 && ch <= 57)
+        settextstyle(3, 0, 5);
+        char numbtxt[100] = { 'n', 'u', 'm', 'b', 'e', 'r', ':', ' '};
+        outtextxy(0, 0, numbtxt);
+        do
         {
-            settextstyle(3, 0, 5);
-            outtextxy(0, 0, t);
-            aux = ch;
-            
-        }  
-        ch = getch();
-		if (ch == 32)
-		{
-            switch (aux)
+            char aux;
+            aux = getch();
+            if (aux >= 48 && aux <= 57)
             {
-                case 49:
-                    ok = mapData(aux);
-                    break;
-                case 50:
-                    ok = mapData(aux);
-                    break;
-                case 51:
-                    ok = mapData(aux);
-                    break;
-                case 52:
-                    ok = mapData(aux);
-                    break;
+                numb[0] = (int)aux;
+				ch[0] = (int)aux;
+				ch[1] = '\0';
+                outtextxy(180, 0, ch);
             }
+            aux = getch();
+            if (aux >= 48 && aux <= 57)
+            {
+                numb[1] = (int)aux;
+                ch[0] = (int)aux;
+                ch[1] = '\0';
+                outtextxy(210, 0, ch);
+            }
+            aux = getch();
+            if (aux >= 48 && aux <= 57)
+            {
+                numb[2] = (int)aux;
+                ch[0] = (int)aux;
+                ch[1] = '\0';
+                outtextxy(240, 0, ch);
+            }
+            aux = getch();
+            if (aux >= 48 && aux <= 57)
+            {
+                numb[3] = (int)aux;
+                ch[0] = (int)aux;
+                ch[1] = '\0';
+                outtextxy(270, 0, ch);
+            }
+			char key = getch();
+            if (key == 32)
+            {
+                break;
+            }
+        }while (1);
+		numb[4] = '\0';
+        char t[100] = { 'm', 'a', 'p', ':', ' ', numb[0],numb[1] ,numb[2] ,numb[3]};
+        outtextxy(0, 50, t);
+        key = getch();
+		if (key == 32)
+		{
+            ok = mapData(numb);
 		}
     }
 
-    if (ch == 32)
+    if (key == 32)
     {
 		setbkcolor(COLOR(10,10, 10));
         while (1)
@@ -305,22 +324,22 @@ int main()
             double moveSpeed = frameTime * 100.0;
             double rotSpeed = frameTime * 50.0;
 
-            ch = getch();
+            key = getch();
 
-            if (ch == 119) // in fata
+            if (key == 119) // in fata
             {
                 if (map[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
                 if (map[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
             }
 
-            if (ch == 115) // in spate
+            if (key == 115) // in spate
             {
                 if (map[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
                 if (map[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
             }
 
             //rotam directia camerei
-            if (ch == 100) // dreapta
+            if (key == 100) // dreapta
             {
                 double oldDirX = dirX;
                 dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
@@ -330,7 +349,7 @@ int main()
                 planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
             }
 
-            if (ch == 97) // stanga
+            if (key == 97) // stanga
             {
                 double oldDirX = dirX;
                 dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
@@ -345,7 +364,7 @@ int main()
                 time = 0;
             }
 
-            if (ch == 27) // 27 = ESC (ASCII)
+            if (key == 27) // 27 = ESC (ASCII)
             {
                 return 0;
             }

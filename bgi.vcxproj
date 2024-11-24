@@ -83,10 +83,10 @@
     <ClInclude Include="winbgitypes.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="map1.in" />
-    <None Include="map2.in" />
-    <None Include="map3.in" />
-    <None Include="map4.in" />
+    <None Include="map0001.in" />
+    <None Include="map0002.in" />
+    <None Include="map0003.in" />
+    <None Include="map0004.in" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
