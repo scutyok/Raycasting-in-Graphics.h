@@ -6,27 +6,41 @@
 
 using namespace std;
 
-ifstream fin("map.in");
-
 #define M_PI 3.14159265359
 #define mW 25
 #define mH 25
 #define sW 1280
 #define sH 720
 
-//maps are only square for now
+//maps are can be any shape now
 
 int map[mW][mH];
 
-void mapData(int n)
+int mapData(int n)
 {
-    for (int i = 1; i <= n; i++)
+	char s[10] = {'m', 'a', 'p', (char)n, '.', 'i', 'n'};
+    ifstream fin(s);
+	if (!fin.is_open())
+	{
+		cout << "Error: Map not found";
+		exit(0);
+	}
+    int i=1, j=1;
+    char ch;
+    while (fin >> noskipws >> ch)
     {
-        for (int j = 1; j <= n; j++)
+        if (ch >= 48 && ch <=57)
         {
-            fin >> map[i][j];
+            map[i][j] = ch - 48;
+            j++;
+        }
+        if (ch == '\n')
+        {
+            j = 1;
+            i++;
         }
     }
+    return 1;
 }
 
 void rectangleRotate(int cx, int cy, int w, int h, int angle = 0)
@@ -54,127 +68,154 @@ void rectangleRotate(int cx, int cy, int w, int h, int angle = 0)
 
 int main()
 {
-    mapData(24);
-
     double posX = 22, posY = 12;  //pozitiile de start ale playerului
     double dirX = -1, dirY = 0; //directia in care se uita
-    double planeX= 0, planeY = 0.66; //the 2d raycaster version of camera plane
+    double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
 
     double time = 0; //timingul la frameul curent
     double oldTime = 0; //timingul la frameul anterior
 
     initwindow(sW, sH, "Raycaster");
 
-    char ch;
-    while(1)
-    {   
-        cleardevice();
+    char ch=49,aux;
 
-        for (int x = 0; x <= sW; x++)
+    int ok = 0;
+    while (ok == 0)
+    {
+        char t[10] = { 'm', 'a', 'p', (char)ch };
+        if (ch >= 48 && ch <= 57)
         {
-            //algoritmul DDA
-            double cameraX = 2 * x / double(sW) - 1;
-            double rayDirX = dirX + planeX * cameraX;
-            double rayDirY = dirY + planeY * cameraX;
-
-            //PATRATUL IN CARE NE AFLAM
-            int mapX = (int)posX;
-            int mapY = (int)posY;
-
-            //lungimea de la player pana la urmatoarea latura a patratelor prin care trece traiectoria razei
-            double sideDistX;
-            double sideDistY;
-
-			//calculul lungimii
-            double deltaDistX = (rayDirX == 0) ? 1e30 : abs(1 / rayDirX); //distanta poate fi simplificata de la radical la absolut cu ajutorul derivarii
-			double deltaDistY = (rayDirY == 0) ? 1e30 : abs(1 / rayDirY); //putem folosii 1 pentru |rayDir| fiindca am nevoie doar de deltaDistX impartit la deltaDistY
-            double perpWallDist; //calculam lungimea razei
-
-			//1e30 = infinit -> nu mai da erroare la impartirea cu 0
-
-			//DDA va sarii intotdeauna cate un patrat, deci daca raza merge in directia X, atunci distanta pana la urmatorul patrat pe X va fi 1 si vice versa in cazul lui Y
-            int stepX; //(1,-1)
-            int stepY; //(1,-1)
-
-            int hit = 0; //indicele daca a fost lovit un perete
-            int side; //a fost atins peretele de pe y sau de pe x?
-
-            //calculam patratul si distanta laterala
-            if (rayDirX < 0)
+            settextstyle(3, 0, 5);
+            outtextxy(0, 0, t);
+            aux = ch;
+            
+        }  
+        ch = getch();
+		if (ch == 32)
+		{
+            switch (aux)
             {
-                stepX = -1;
-                sideDistX = (posX - mapX) * deltaDistX;
+                case 49:
+                    ok = mapData(aux);
+                    break;
+                case 50:
+                    ok = mapData(aux);
+                    break;
             }
-            else
-            {
-                stepX = 1;
-                sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-            }
+		}
+    }
 
-            if (rayDirY < 0)
+    if (ch == 32)
+    {
+        while (1)
+        {
+            cleardevice();
+
+            for (int x = 0; x <= sW; x++)
             {
-                stepY = -1;
-                sideDistY = (posY - mapY) * deltaDistY;
-            }
-            else
-            {
-                stepY = 1;
-                sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-            }
-            //DDA
-            while (hit == 0)
-            {
-				//pasul la urmatorul patrat pe X sau Y
-                if (sideDistX < sideDistY)
+                //algoritmul DDA
+                double cameraX = 2 * x / double(sW) - 1;
+                double rayDirX = dirX + planeX * cameraX;
+                double rayDirY = dirY + planeY * cameraX;
+
+                //PATRATUL IN CARE NE AFLAM
+                int mapX = (int)posX;
+                int mapY = (int)posY;
+
+                //lungimea de la player pana la urmatoarea latura a patratelor prin care trece traiectoria razei
+                double sideDistX;
+                double sideDistY;
+
+                //calculul lungimii
+                double deltaDistX = (rayDirX == 0) ? 1e30 : abs(1 / rayDirX); //distanta poate fi simplificata de la radical la absolut cu ajutorul derivarii
+                double deltaDistY = (rayDirY == 0) ? 1e30 : abs(1 / rayDirY); //putem folosii 1 pentru |rayDir| fiindca am nevoie doar de deltaDistX impartit la deltaDistY
+                double perpWallDist; //calculam lungimea razei
+
+                //1e30 = infinit -> nu mai da erroare la impartirea cu 0
+
+                //DDA va sarii intotdeauna cate un patrat, deci daca raza merge in directia X, atunci distanta pana la urmatorul patrat pe X va fi 1 si vice versa in cazul lui Y
+                int stepX; //(1,-1)
+                int stepY; //(1,-1)
+
+                int hit = 0; //indicele daca a fost lovit un perete
+                int side; //a fost atins peretele de pe y sau de pe x?
+
+                //calculam patratul si distanta laterala
+                if (rayDirX < 0)
                 {
-                    sideDistX += deltaDistX;
-                    mapX += stepX;
-                    side = 0;
+                    stepX = -1;
+                    sideDistX = (posX - mapX) * deltaDistX;
                 }
                 else
                 {
-                    sideDistY += deltaDistY;
-                    mapY += stepY;
-                    side = 1;
+                    stepX = 1;
+                    sideDistX = (mapX + 1.0 - posX) * deltaDistX;
                 }
-                //verifica patratu si daca am nimerit un perete
-                if (map[mapX][mapY] > 0)
+
+                if (rayDirY < 0)
                 {
-                    hit = 1;
+                    stepY = -1;
+                    sideDistY = (posY - mapY) * deltaDistY;
                 }
-            }
+                else
+                {
+                    stepY = 1;
+                    sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+                }
+                //DDA
+                while (hit == 0)
+                {
+                    //pasul la urmatorul patrat pe X sau Y
+                    if (sideDistX < sideDistY)
+                    {
+                        sideDistX += deltaDistX;
+                        mapX += stepX;
+                        side = 0;
+                    }
+                    else
+                    {
+                        sideDistY += deltaDistY;
+                        mapY += stepY;
+                        side = 1;
+                    }
+                    //verifica patratu si daca am nimerit un perete
+                    if (map[mapX][mapY] > 0)
+                    {
+                        hit = 1;
+                    }
+                }
 
-            //calculum distantei (NU CALCULA CU EUCLID ==> fisheye effect)
-            if (side == 0)
-            {
-                perpWallDist = (sideDistX - deltaDistX);
-			}
-			else
-			{
-				perpWallDist = (sideDistY - deltaDistY);
-			}
+                //calculam distanta (NU CALCULA CU EUCLID ==> fisheye effect)
+                if (side == 0)
+                {
+                    perpWallDist = (sideDistX - deltaDistX);
+                }
+                else
+                {
+                    perpWallDist = (sideDistY - deltaDistY);
+                }
 
-            //inaltimea peretelui
-            int lineHeight = (int)(sH / perpWallDist);
+                //inaltimea peretelui
+                int lineHeight = (int)(sH / perpWallDist);
 
-            //cel mai inalt si cel mai scund pixel (e pentru fill)
-            int drawStart = -lineHeight / 2 + sH / 2; //incepe de sus
-            if (drawStart < 0)
-            {
-                drawStart = 0;
-            } 
-            int drawEnd = lineHeight / 2 + sH / 2; //incepe de jos
-            if (drawEnd >= sH)
-            {
-                drawEnd = sH - 1;
-            }
-            //bazat pe numarul din matrice, alegem culoarea
-            int r=0,g=0,b=0;
-            float epsilon = sH / 255;
-            int drawLum = (drawEnd - drawStart)/epsilon;
-            switch (map[mapX][mapY])
-            {
-                case 1:  
+                //cel mai inalt si cel mai scund pixel (e pentru fill)
+                int drawStart = -lineHeight / 2 + sH / 2; //incepe de sus
+                if (drawStart < 0)
+                {
+                    drawStart = 0;
+                }
+                int drawEnd = lineHeight / 2 + sH / 2; //incepe de jos
+                if (drawEnd >= sH)
+                {
+                    drawEnd = sH - 1;
+                }
+                //bazat pe numarul din matrice, alegem culoarea
+                int r = 0, g = 0, b = 0;
+                float epsilon = sH / 255;
+                int drawLum = (drawEnd - drawStart) / epsilon;
+                switch (map[mapX][mapY])
+                {
+                case 1:
                     if (100 + drawLum < 255)
                     {
                         r = 100 + drawLum; g = 0; b = 0;
@@ -184,7 +225,7 @@ int main()
                         r = 255; g = 0; b = 0;
                     }
                     break; //red
-                case 2:  
+                case 2:
                     if (100 + drawLum < 255)
                     {
                         r = 0; g = 100 + drawLum; b = 0;
@@ -194,7 +235,7 @@ int main()
                         r = 0; g = 255; b = 0;
                     }
                     break; //green
-                case 3:  
+                case 3:
                     if (100 + drawLum < 255)
                     {
                         r = 0; g = 0; b = 100 + drawLum;
@@ -204,7 +245,7 @@ int main()
                         r = 0; g = 0; b = 255;
                     }
                     break; //blue
-				case 4:  
+                case 4:
                     if (100 + drawLum < 255)
                     {
                         r = 100 + drawLum; g = 100 + drawLum; b = 100 + drawLum;
@@ -214,7 +255,7 @@ int main()
                         r = 255; g = 255; b = 255;
                     }
                     break;   //white
-				default: 
+                default:
                     if (100 + drawLum < 255)
                     {
                         r = 100 + drawLum; g = 100 + drawLum; b = 0;
@@ -224,74 +265,75 @@ int main()
                         r = 255; g = 255; b = 0;
                     }
                     break; //yellow
+                }
+                // luminozitatea peretelui
+                if (side == 1)
+                {
+                    r = r / 2;
+                    g = g / 2;
+                    b = b / 2;
+                }
+
+                //linia verticala
+                setcolor(COLOR(r, g, b));
+                line(x, drawStart, x, drawEnd);
             }
-			// luminozitatea peretelui
-            if (side == 1) 
-            { 
-                r = r / 2; 
-				g = g / 2;
-				b = b / 2;
+
+            swapbuffers();
+            oldTime = time;
+            time++;
+
+            double frameTime = (time - oldTime) / 1000.0; //frameTime = timpul in secunde pentru frameul curent
+
+            double moveSpeed = frameTime * 100.0;
+            double rotSpeed = frameTime * 30.0;
+
+            ch = getch();
+
+            if (ch == 119) // in fata
+            {
+                if (map[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
+                if (map[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
             }
 
-            //linia verticala
-			setcolor(COLOR(r, g, b));
-            line(x, drawStart, x, drawEnd);
+            if (ch == 115) // in spate
+            {
+                if (map[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
+                if (map[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+            }
+
+            //rotam directia camerei
+            if (ch == 100) // dreapta
+            {
+                double oldDirX = dirX;
+                dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+                dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+                double oldPlaneX = planeX;
+                planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+                planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+            }
+
+            if (ch == 97) // stanga
+            {
+                double oldDirX = dirX;
+                dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+                dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+                double oldPlaneX = planeX;
+                planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+                planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+            }
+
+            if (time > 1000)
+            {
+                time = 0;
+            }
+
+            if (ch == 27) // 27 = ESC (ASCII)
+            {
+                return 0;
+            }
         }
-
-		swapbuffers();
-        oldTime = time;
-        time++;
-
-		double frameTime = (time - oldTime) / 1000.0; //frameTime = timpul in secunde pentru frameul curent
-        
-        double moveSpeed = frameTime * 100.0;
-        double rotSpeed = frameTime * 30.0;
-
-        ch = getch();
-
-        if(ch == 119) // in fata
-        {
-            if (map[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
-            if (map[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
-        }
-
-        if(ch == 115) // in spate
-        {
-            if (map[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
-            if (map[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
-        }
-
-		//rotam directia camerei
-		if (ch == 100) // dreapta
-        {
-            double oldDirX = dirX;
-            dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-            dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-            double oldPlaneX = planeX;
-            planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-            planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
-        }
-
-		if (ch == 97) // stanga
-        {
-            double oldDirX = dirX;
-            dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-            dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-            double oldPlaneX = planeX;
-            planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-            planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
-        }
-
-        if (time > 1000)
-        {
-			time = 0;
-        }
-
-        if (ch == 27) // 27 = ESC (ASCII)
-        {
-            return 0;
-        }
-    }
+    }   
 
     while (!kbhit())
     {

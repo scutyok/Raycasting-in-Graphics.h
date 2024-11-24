@@ -70,7 +70,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="map.in">
+    <None Include="map1.in">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="map2.in">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
