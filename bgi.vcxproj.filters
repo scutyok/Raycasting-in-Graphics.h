@@ -79,5 +79,8 @@
     <None Include="map3.in">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="map4.in">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

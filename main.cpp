@@ -12,9 +12,11 @@ using namespace std;
 #define sW 1280
 #define sH 720
 
-//maps are can be any shape now
-
+//maps can be any shape now
 int map[mW][mH];
+
+//pozitiile de start ale playerului
+double posX, posY;
 
 int mapData(int n)
 {
@@ -25,10 +27,16 @@ int mapData(int n)
 		cout << "Error: Map not found";
 		exit(0);
 	}
-    int i=1, j=1;
-    char ch;
+    int i=1, j=1, jnk;
+    char ch,oldch=1;
+    fin >> posX >> posY;
+    fin >> jnk;
     while (fin >> noskipws >> ch)
     {
+        if (oldch == '\n' && ch == '\n')
+        {
+            break;
+        }
         if (ch >= 48 && ch <=57)
         {
             map[i][j] = ch - 48;
@@ -39,7 +47,9 @@ int mapData(int n)
             j = 1;
             i++;
         }
+        oldch = ch;
     }
+	cout << posX << " " << posY << endl;
     return 1;
 }
 
@@ -68,7 +78,6 @@ void rectangleRotate(int cx, int cy, int w, int h, int angle = 0)
 
 int main()
 {
-    double posX = 22, posY = 12;  //pozitiile de start ale playerului
     double dirX = -1, dirY = 0; //directia in care se uita
     double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
 
@@ -102,6 +111,9 @@ int main()
                     ok = mapData(aux);
                     break;
                 case 51:
+                    ok = mapData(aux);
+                    break;
+                case 52:
                     ok = mapData(aux);
                     break;
             }
