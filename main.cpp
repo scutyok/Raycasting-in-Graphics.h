@@ -278,8 +278,8 @@ int main()
                 }
 
                 //linia verticala
-                setcolor(COLOR(r, g, b));
-                line(x, drawStart, x, drawEnd);
+                setfillstyle(SOLID_FILL, COLOR(r,g,b));
+                bar(x, drawStart, x + 1, drawEnd);
             }
 
             swapbuffers();
