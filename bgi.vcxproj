@@ -87,6 +87,11 @@
     <None Include="map0002.in" />
     <None Include="map0003.in" />
     <None Include="map0004.in" />
+    <None Include="maps\map0001.in" />
+    <None Include="maps\map0002.in" />
+    <None Include="maps\map0003.in" />
+    <None Include="maps\map0004.in" />
+    <None Include="maps\map0005.in" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

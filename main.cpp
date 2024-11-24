@@ -20,7 +20,8 @@ double posX, posY;
 
 int mapData(char n[])
 {
-	char s[100] = {'m', 'a', 'p',n[0],n[1],n[2],n[3], '.', 'i', 'n'};
+	char s[100] = {'.', '/', 'm', 'a', 'p', 's', '/', 'm', 'a', 'p',n[0],n[1],n[2],n[3], '.', 'i', 'n'};
+    cout << s;
     ifstream fin(s);
     int i=1, j=1, jnk;
     char ch,oldch=1;

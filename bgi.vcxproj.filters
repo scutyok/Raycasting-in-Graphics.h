@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\maps">
+      <UniqueIdentifier>{aba659df-da9b-4a76-92e8-3afd56f42b15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bgiout.cxx">
@@ -71,16 +74,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="map0001.in">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\maps</Filter>
     </None>
     <None Include="map0002.in">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\maps</Filter>
     </None>
     <None Include="map0003.in">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\maps</Filter>
     </None>
     <None Include="map0004.in">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\maps</Filter>
+    </None>
+    <None Include="maps\map0005.in">
+      <Filter>Source Files\maps</Filter>
+    </None>
+    <None Include="maps\map0001.in">
+      <Filter>Source Files\maps</Filter>
+    </None>
+    <None Include="maps\map0002.in">
+      <Filter>Source Files\maps</Filter>
+    </None>
+    <None Include="maps\map0003.in">
+      <Filter>Source Files\maps</Filter>
+    </None>
+    <None Include="maps\map0004.in">
+      <Filter>Source Files\maps</Filter>
     </None>
   </ItemGroup>
 </Project>
