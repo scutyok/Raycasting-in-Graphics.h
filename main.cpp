@@ -122,6 +122,7 @@ int main()
 
     if (ch == 32)
     {
+		setbkcolor(COLOR(10,10, 10));
         while (1)
         {
             cleardevice();
@@ -301,7 +302,7 @@ int main()
             double frameTime = (time - oldTime) / 1000.0; //frameTime = timpul in secunde pentru frameul curent
 
             double moveSpeed = frameTime * 100.0;
-            double rotSpeed = frameTime * 30.0;
+            double rotSpeed = frameTime * 50.0;
 
             ch = getch();
 
