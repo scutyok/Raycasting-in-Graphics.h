@@ -101,6 +101,9 @@ int main()
                 case 50:
                     ok = mapData(aux);
                     break;
+                case 51:
+                    ok = mapData(aux);
+                    break;
             }
 		}
     }
