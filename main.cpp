@@ -316,7 +316,7 @@ int main()
                 bar(x, drawStart, x + 1, drawEnd);
             }
 
-            swapbuffers();
+
             oldTime = time;
             time++;
 
